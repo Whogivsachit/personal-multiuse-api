@@ -1,0 +1,345 @@
+swagger: '2.0'
+info:
+  title: Chit's Api Documentation
+  version: 1.0.0
+  description: Please note this has an active rate limit.<br><br> Limit 60 requests per minute.<br><br>You can check your headers for information on how much you have left.<br><br>Results are cached for 1 minute.
+tags:
+  - name: ServerInfo
+    description: Operations related to server information
+  - name: Token
+    description: Operations related to tokens
+  - name: Stock
+    description: Operations related to stock
+securityDefinitions:
+  Bearer:
+    description: Provide the token in the format 'Bearer {token}'
+    type: apiKey
+    name: Authorization
+    in: header
+paths:
+  /serverinfo/{game}/{ip}:{port}:
+    get:
+      tags: [ServerInfo]
+      summary: Get the server info for a game server
+      parameters:
+        - name: game
+          in: path
+          required: true
+          type: string
+          description: The game you want to get the server info for
+        - name: ip
+          in: path
+          required: true
+          type: string
+          description: The IP of the server
+        - name: port
+          in: path
+          required: true
+          type: string
+          description: The port of the server
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: object
+            properties:
+              status:
+                type: number
+                description: The status code of the request
+              data:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: The name of the server
+                  ip:
+                    type: string
+                    description: The IP of the server
+                  ping:
+                    type: number
+                    description: The ping of the server
+                  version:
+                    type: string
+                    description: The version of the server
+                  map:
+                    type: string
+                    description: The map of the server
+                  players:
+                    type: number
+                    description: The number of players on the server
+                  maxplayers:
+                    type: number
+                    description: The max number of players on the server
+                  playerArray:
+                    type: object
+                    description: An object of players on the server
+        '404, 500':
+          description: Server is offline
+        '418':
+          description: Please provide the game, IP, and port
+  /auth/generate/{username}:
+    post:
+      security:
+        - Bearer: []
+      tags: [Token]
+      summary: Generate a token for a given username
+      parameters:
+        - name: username
+          in: path
+          required: true
+          type: string
+          description: The username for which to generate the token
+      responses:
+        '200':
+          description: Token generated successfully
+          schema:
+            type: object
+            properties:
+              status:
+                type: number
+                example: 200
+              message:
+                type: string
+                example: Token generated successfully for {username}
+              token:
+                type: string
+                example: 1234567890
+        '409':
+          description: Token already exists for the given username
+          schema:
+            type: object
+            properties:
+              status:
+                type: number
+                example: 409
+              message:
+                type: string
+                example: Token already exists for {username}
+  /stock/advin:
+    get:
+      security:
+        - Bearer: []
+      tags: [Stock]
+      summary: Get all products
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: object
+            properties:
+              status:
+                type: number
+                description: The status code of the request
+                example: 200
+              body:
+                type: array
+                description: Array of merged products
+                items:
+                  type: object
+                  properties:
+                    category:
+                      type: string
+                      description: The category of the product
+                    name:
+                      type: string
+                      description: The name of the product
+                    description:
+                      type: string
+                      description: The description of the product
+                    price:
+                      type: string
+                      description: The price of the product
+                    inStock:
+                      type: boolean
+                      description: Indicates if the product is in stock
+                    orderLink:
+                      type: string
+                      description: The order link for the product
+  /stock/advin/categories:
+    get:
+      security:
+        - Bearer: []
+      tags: [Stock]
+      summary: Get all categories
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: object
+            properties:
+              status:
+                type: number
+                description: The status code of the request
+                example: 200
+              body:
+                type: array
+                description: Array of categories
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      description: The name of the category
+                    url:
+                      type: string
+                      description: The URL of the category
+  /stock/advin/{category}:
+    get:
+      security:
+        - Bearer: []
+      tags: [Stock]
+      summary: Get products by category
+      parameters:
+        - name: category
+          in: path
+          required: true
+          type: string
+          description: The category of products to retrieve
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: object
+            properties:
+              status:
+                type: number
+                description: The status code of the request
+                example: 200
+              body:
+                type: array
+                description: Array of products
+                items:
+                  type: object
+                  properties:
+                    category:
+                      type: string
+                      description: The category of the product
+                    name:
+                      type: string
+                      description: The name of the product
+                    description:
+                      type: string
+                      description: The description of the product
+                    price:
+                      type: string
+                      description: The price of the product
+                    inStock:
+                      type: boolean
+                      description: Indicates if the product is in stock
+                    orderLink:
+                      type: string
+                      description: The order link for the product
+  /stock/hop1:
+    get:
+      security:
+        - Bearer: []
+      tags: [Stock]
+      summary: Get all products
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: object
+            properties:
+              status:
+                type: number
+                description: The status code of the request
+                example: 200
+              body:
+                type: array
+                description: Array of merged products
+                items:
+                  type: object
+                  properties:
+                    category:
+                      type: string
+                      description: The category of the product
+                    name:
+                      type: string
+                      description: The name of the product
+                    description:
+                      type: string
+                      description: The description of the product
+                    price:
+                      type: string
+                      description: The price of the product
+                    inStock:
+                      type: boolean
+                      description: Indicates if the product is in stock
+                    orderLink:
+                      type: string
+                      description: The order link for the product
+  /stock/hop1/categories:
+    get:
+      security:
+        - Bearer: []
+      tags: [Stock]
+      summary: Get all categories
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: object
+            properties:
+              status:
+                type: number
+                description: The status code of the request
+                example: 200
+              body:
+                type: array
+                description: Array of categories
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      description: The name of the category
+                    url:
+                      type: string
+                      description: The URL of the category
+  /stock/hop1/{category}:
+    get:
+      security:
+        - Bearer: []
+      tags: [Stock]
+      summary: Get products by category
+      parameters:
+        - name: category
+          in: path
+          required: true
+          type: string
+          description: The category of products to retrieve
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: object
+            properties:
+              status:
+                type: number
+                description: The status code of the request
+                example: 200
+              body:
+                type: array
+                description: Array of products
+                items:
+                  type: object
+                  properties:
+                    category:
+                      type: string
+                      description: The category of the product
+                    name:
+                      type: string
+                      description: The name of the product
+                    description:
+                      type: string
+                      description: The description of the product
+                    price:
+                      type: string
+                      description: The price of the product
+                    inStock:
+                      type: boolean
+                      description: Indicates if the product is in stock
+                    orderLink:
+                      type: string
+                      description: The order link for the product

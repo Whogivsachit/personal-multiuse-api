@@ -1,0 +1,31 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve": "pm2 start index.js --name api",
+    "dev": "nodemon index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.4.0",
+    "chalk": "^4.1.2",
+    "cheerio": "^1.0.0-rc.12",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-rate-limit": "^6.7.0",
+    "fs": "^0.0.1-security",
+    "gamedig": "^4.0.6",
+    "jsonwebtoken": "^9.0.0",
+    "node-cache": "^5.1.2",
+    "nodemon": "^2.0.22",
+    "pm2": "^5.3.0",
+    "request": "^2.88.2",
+    "request-ip": "^3.3.0",
+    "swagger-ui-express": "^4.6.3",
+    "yaml": "^2.3.1"
+  }
+}
